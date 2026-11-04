@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agenda de Aulas — Agosto a Dezembro 2026</title>
+<style>
+:root{
+  --bg:#07111d;--panel:#0e2034;--panel2:#132b46;--text:#f7f9fc;
+  --muted:#b8c6d8;--green:#32d17d;--blue:#4ca7ff;--yellow:#ffd166;
+  --orange:#ff9f43;--red:#ff6b6b;--border:#2a4966;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;min-height:100vh;font-family:Arial,Helvetica,sans-serif;
+  background:linear-gradient(160deg,#06101b,#0a1d31 55%,#0c2947);color:var(--text)
+}
+header{text-align:center;padding:24px 14px 16px}
+header h1{margin:0;color:var(--green);font-size:clamp(1.8rem,5vw,3rem)}
+header p{color:var(--muted);max-width:900px;margin:10px auto;line-height:1.55}
+.clockBox{
+  width:min(540px,96%);margin:15px auto 0;background:#071725;
+  border:1px solid var(--green);border-radius:16px;padding:15px
+}
+#clock{font-size:clamp(2rem,8vw,4rem);font-weight:bold;color:var(--yellow);letter-spacing:3px}
+#today{color:var(--muted);margin-top:7px}
+.container{width:min(1250px,95%);margin:auto;padding-bottom:45px}
+.panel{
+  background:rgba(14,32,52,.97);border:1px solid var(--border);border-radius:17px;
+  padding:18px;margin-bottom:18px;box-shadow:0 12px 30px rgba(0,0,0,.25)
+}
+h2{margin-top:0;color:var(--green)}
+h3{color:#fff;margin-top:22px}
+label{display:block;font-weight:bold;margin-bottom:7px}
+input,select,textarea{
+  width:100%;padding:11px;border-radius:10px;border:1px solid var(--border);
+  background:#071725;color:var(--text);font-size:1rem
+}
+textarea{min-height:80px;resize:vertical}
+.formGrid{display:grid;grid-template-columns:repeat(4,minmax(160px,1fr));gap:13px}
+.full{grid-column:1/-1}
+.toolbar{display:flex;flex-wrap:wrap;gap:9px;margin-top:15px}
+button{
+  border:0;border-radius:10px;padding:11px 14px;font-weight:bold;cursor:pointer;
+  transition:transform .16s,opacity .16s
+}
+button:hover{transform:translateY(-1px)}
+button:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.primary{background:var(--green);color:#032214}
+.secondary{background:var(--blue);color:#fff}
+.neutral{background:#2a4662;color:#fff}
+.danger{background:var(--red);color:#2a0202}
+.warning{background:var(--yellow);color:#2d2100}
+.orange{background:var(--orange);color:#2d1600}
+
+.summary{display:grid;grid-template-columns:repeat(6,minmax(120px,1fr));gap:12px}
+.sumCard{
+  background:linear-gradient(145deg,var(--panel2),#0a1828);border:1px solid var(--border);
+  border-radius:14px;padding:14px;text-align:center
+}
+.sumCard strong{display:block;font-size:1.8rem;color:var(--yellow)}
+.sumCard span{color:var(--muted);font-size:.9rem}
+
+.alertLegend{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.legendItem{
+  display:flex;align-items:center;gap:7px;background:#071725;border:1px solid var(--border);
+  padding:8px 10px;border-radius:10px
+}
+.legendDot{width:14px;height:14px;border-radius:50%}
+.dotOrange{background:var(--orange)}.dotBlue{background:var(--blue)}
+.dotGreen{background:var(--green)}.dotRed{background:var(--red)}
+
+.liveCard{
+  background:linear-gradient(145deg,#123555,#071725);border:1px solid var(--blue);
+  border-radius:16px;padding:18px
+}
+.liveEmpty{text-align:center;color:var(--muted);padding:22px}
+.liveTop{display:flex;justify-content:space-between;gap:15px;align-items:flex-start;flex-wrap:wrap}
+.liveTitle{font-size:1.35rem;font-weight:bold;color:#fff}
+.liveMeta{color:var(--muted);line-height:1.65;margin-top:6px}
+.timerDisplay{
+  font-size:clamp(2.1rem,7vw,4rem);font-weight:bold;color:var(--yellow);
+  letter-spacing:2px;font-variant-numeric:tabular-nums;text-align:center;margin:18px 0 7px
+}
+.timerSub{text-align:center;color:var(--muted);margin-bottom:13px}
+.progressOuter{
+  width:100%;height:25px;background:#06111d;border:1px solid var(--border);
+  border-radius:999px;overflow:hidden;position:relative
+}
+.progressInner{
+  width:0%;height:100%;background:linear-gradient(90deg,var(--blue),var(--green));
+  transition:width .4s
+}
+.progressLabel{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  color:white;font-weight:bold;font-size:.84rem;text-shadow:0 1px 3px #000
+}
+.liveStats{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px
+}
+.liveStat{
+  padding:11px;border-radius:11px;background:#071725;border:1px solid var(--border);text-align:center
+}
+.liveStat strong{display:block;color:var(--green);font-size:1.15rem}
+.liveStat span{color:var(--muted);font-size:.8rem}
+
+.calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
+.weekday{
+  text-align:center;padding:9px;background:#0a192a;color:var(--green);
+  border-radius:9px;font-weight:bold
+}
+.day{
+  min-height:140px;background:#0a192a;border:1px solid var(--border);
+  border-radius:12px;padding:9px
+}
+.day.empty{opacity:.35}
+.day.today{border:2px solid var(--yellow)}
+.num{font-weight:bold;font-size:1.1rem}
+.dayname{display:block;color:var(--muted);font-size:.78rem;margin-top:2px}
+.chip{
+  margin-top:7px;padding:8px;border-radius:9px;background:#173a59;
+  border-left:4px solid var(--blue);font-size:.84rem;line-height:1.35;cursor:pointer
+}
+.chip.Realizada{border-left-color:var(--green)}
+.chip.Cancelada{border-left-color:var(--red);opacity:.75}
+.chip.Em-andamento{border-left-color:var(--yellow);background:rgba(255,209,102,.13)}
+.chip.alertOrange{border-left-color:var(--orange);background:rgba(255,159,67,.15)}
+.chip.alertBlue{border-left-color:var(--blue);background:rgba(76,167,255,.17)}
+.chip.alertGreen{border-left-color:var(--green);background:rgba(50,209,125,.17)}
+.chip.alertRed{border-left-color:var(--red);background:rgba(255,107,107,.14)}
+.alertTag{
+  display:inline-block;margin-top:5px;padding:4px 7px;border-radius:999px;
+  font-size:.74rem;font-weight:bold
+}
+.tagOrange{background:var(--orange);color:#2b1600}
+.tagBlue{background:var(--blue);color:#021b31}
+.tagGreen{background:var(--green);color:#022214}
+.tagRed{background:var(--red);color:#2a0202}
+.tagYellow{background:var(--yellow);color:#2d2100}
+
+.filters{display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px;margin-bottom:14px}
+.tableWrap{overflow:auto;border:1px solid var(--border);border-radius:12px}
+table{width:100%;border-collapse:collapse;min-width:1050px}
+th,td{padding:10px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top}
+th{background:#102b47;color:var(--green);position:sticky;top:0;z-index:1}
+tr:last-child td{border-bottom:0}
+.badge{
+  display:inline-block;padding:5px 9px;border-radius:999px;font-size:.8rem;font-weight:bold
+}
+.AgendadaB{background:rgba(76,167,255,.18);color:#9ccfff}
+.RealizadaB{background:rgba(50,209,125,.18);color:#83e5b1}
+.CanceladaB{background:rgba(255,107,107,.18);color:#ffaaaa}
+.Em-andamentoB{background:rgba(255,209,102,.18);color:#ffe7a0}
+.actions{display:flex;gap:6px;flex-wrap:wrap}
+.actions button{padding:7px 9px;font-size:.82rem}
+.message{margin-top:12px;color:var(--muted);line-height:1.5}
+.empty{text-align:center;color:var(--muted);padding:22px}
+.historyTime{font-weight:bold;color:var(--yellow)}
+
+@media(max-width:1000px){
+  .formGrid{grid-template-columns:1fr 1fr}
+  .summary{grid-template-columns:repeat(3,1fr)}
+  .calendar{grid-template-columns:repeat(2,1fr)}
+  .weekday{display:none}
+  .filters{grid-template-columns:1fr}
+  .liveStats{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:560px){
+  .formGrid,.summary,.calendar,.liveStats{grid-template-columns:1fr}
+  .day.empty{display:none}
+  .toolbar{display:grid;grid-template-columns:1fr}
+  .toolbar button{width:100%}
+}
+@media print{
+  body,.panel{background:white;color:black;box-shadow:none}
+  .formPanel,.toolbar,.filters,.clockBox,.actions,.alertLegend{display:none!important}
+  .day,.sumCard,.liveCard,.liveStat{background:white;color:black}
+  th{position:static;background:#eee;color:black}
+  .timerDisplay,.historyTime{color:black}
+}
+#saveIndicator{position:fixed;right:15px;bottom:15px;z-index:50;background:#123b2b;color:#9affc4;border:1px solid #32d17d;padding:12px 18px;border-radius:12px;font-weight:bold;box-shadow:0 5px 22px #0008} .chip.Realizada{background:#124d32!important;border-left:5px solid #32d17d!important;color:#e7fff1} @media print{#saveIndicator{display:none}}
+#nextLessonCountdown{margin-top:12px;padding:16px;border:1px solid var(--blue);border-radius:14px;background:#071725;text-align:center}
+#nextLessonCountdown .countDigits{font-size:clamp(2rem,6vw,3.4rem);font-weight:bold;color:var(--yellow);font-variant-numeric:tabular-nums}
+#nextLessonCountdown .countDigits.soon{color:#32d17d;text-shadow:0 0 18px rgba(50,209,125,.35)}
+#nextLessonCountdown.soonBox{border:2px solid #32d17d;background:rgba(50,209,125,.10);border-radius:14px;padding:16px}
+#nextLessonCountdown .countDetails{color:var(--muted);margin-top:6px}
+.remainingDigits{font-size:clamp(2.2rem,7vw,4rem);font-weight:bold;color:var(--green);font-variant-numeric:tabular-nums;text-align:center;margin-top:8px}
+.remainingDigits.overdue{color:var(--red)}
+</style>
+</head>
+<body>
+<header>
+  <h1>📅 Agenda de Aulas — Agosto a Dezembro 2026</h1>
+  <p>Agenda com alertas por cores, aula em andamento, contagem em tempo real e histórico salvo em horas e minutos.</p>
+  <div class="clockBox">
+    <div id="clock">00:00:00</div>
+    <div id="today"></div>
+  </div>
+</header>
+
+<main class="container">
+<section class="panel formPanel">
+  <h2>➕ Agendar nova aula</h2>
+  <div class="formGrid">
+    <div><label for="student">Aluno</label><input id="student" placeholder="Nome do aluno"></div>
+    <div><label for="lessonDate">Data</label><input id="lessonDate" type="date" min="2026-08-01" max="2026-12-31"></div>
+    <div><label for="lessonTime">Horário</label><input id="lessonTime" type="time"></div>
+    <div>
+      <label for="duration">Duração planejada</label>
+      <select id="duration">
+        <option value="30">30 minutos</option><option value="45">45 minutos</option>
+        <option value="60" selected>1 hora</option><option value="90">1h30</option>
+        <option value="120">2 horas</option><option value="180">3 horas</option>
+      </select>
+    </div>
+    <div><label for="subject">Matéria ou atividade</label><input id="subject" placeholder="Ex.: Inglês básico"></div>
+    <div><label for="teacher">Professor</label><input id="teacher" placeholder="Nome do professor"></div>
+    <div>
+      <label for="status">Situação</label>
+      <select id="status">
+        <option>Agendada</option><option>Em andamento</option>
+        <option>Realizada</option><option>Cancelada</option>
+      </select>
+    </div>
+    <div><label for="location">Local</label><input id="location" placeholder="Sala ou on-line"></div>
+    <div class="full"><label for="notes">Observações</label><textarea id="notes" placeholder="Conteúdo, materiais ou lembretes"></textarea></div>
+  </div>
+  <div class="toolbar">
+    <button class="primary" id="saveBtn" onclick="saveLesson()">💾 Salvar aula</button>
+    <button class="neutral" onclick="clearForm()">🧹 Limpar</button>
+    <button class="secondary" onclick="window.print()">🖨️ Salvar em PDF</button>
+    <button class="warning" onclick="exportCSV()">📥 Baixar CSV</button>
+    <button class="secondary" onclick="backupJSON()">📦 Fazer backup dos registros</button>
+    <button class="neutral" onclick="document.getElementById('restoreFile').click()">📂 Restaurar backup</button>
+    <input id="restoreFile" type="file" accept=".json,application/json" hidden onchange="restoreJSON(this)">
+  </div>
+  <div class="message" id="message">Escolha uma data entre agosto e dezembro de 2026.</div>
+  <div class="alertLegend">
+    <div class="legendItem"><span class="legendDot dotOrange"></span> Laranja: aula se aproximando</div>
+    <div class="legendItem"><span class="legendDot dotBlue"></span> Azul: falta 1 dia</div>
+    <div class="legendItem"><span class="legendDot dotGreen"></span> Verde: aula é hoje</div>
+    <div class="legendItem"><span class="legendDot dotRed"></span> Vermelho: data passou ou foi cancelada</div>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>⏱️ Aula com início automático — tempo real</h2>
+  <h3>⏳ Contagem regressiva até o início da próxima aula</h3>
+  <div id="nextLessonCountdown" aria-live="off"></div>
+  <h3>▶️ Cronômetro e tempo restante da aula iniciada</h3>
+  <div id="liveLesson" class="liveCard"></div>
+</section>
+
+<section class="panel">
+  <h2>🕒 Histórico de tempo salvo</h2>
+  <p class="message">Os registros permanecem salvos neste navegador. A duração aparece em horas e minutos.</p>
+  <div class="tableWrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Data</th><th>Aluno</th><th>Matéria</th><th>Início</th>
+          <th>Fim</th><th>Tempo total</th><th>Situação</th><th>Ação</th>
+        </tr>
+      </thead>
+      <tbody id="timeHistoryBody"></tbody>
+    </table>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>📊 Resumo do mês selecionado</h2>
+  <div class="summary">
+    <div class="sumCard"><strong id="total">0</strong><span>Total de aulas</span></div>
+    <div class="sumCard"><strong id="scheduled">0</strong><span>Agendadas</span></div>
+    <div class="sumCard"><strong id="inProgressCount">0</strong><span>Em andamento</span></div>
+    <div class="sumCard"><strong id="done">0</strong><span>Realizadas</span></div>
+    <div class="sumCard"><strong id="cancelled">0</strong><span>Canceladas</span></div>
+    <div class="sumCard"><strong id="hours">0h</strong><span>Horas programadas</span></div>
+  </div>
+</section>
+
+<section class="panel">
+  <h2 id="calendarTitle">🗓️ Calendário de novembro de 2026</h2>
+   <label for="monthSelect">Selecionar mês</label><select id="monthSelect" onchange="selectedMonth=Number(this.value);localStorage.setItem('agendaAulasMesSelecionado2026',selectedMonth);renderAll()"><option value="7">Agosto</option><option value="8">Setembro</option><option value="9">Outubro</option><option value="10" selected>Novembro</option><option value="11">Dezembro</option></select>
+  <div class="calendar" id="calendar"></div>
+</section>
+
+<section class="panel">
+  <h2>📋 Aulas cadastradas no mês</h2>
+  <div class="filters">
+    <input id="search" placeholder="Pesquisar aluno, matéria, professor ou local" oninput="renderTable()">
+    <select id="filterStatus" onchange="renderTable()">
+      <option value="">Todas as situações</option><option>Agendada</option>
+      <option>Em andamento</option><option>Realizada</option><option>Cancelada</option>
+    </select>
+    <select id="filterDate" onchange="renderTable()"><option value="">Todos os dias</option></select>
+  </div>
+  <div class="tableWrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Data</th><th>Dia</th><th>Hora</th><th>Aluno</th><th>Matéria</th>
+          <th>Duração</th><th>Professor</th><th>Local</th><th>Alerta</th>
+          <th>Situação</th><th>Ações</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+</section>
+</main><div id="saveIndicator" role="status" aria-live="polite">💾 Salvamento automático ativo</div>
+
+<script>
+let selectedMonth=Number(localStorage.getItem("agendaAulasMesSelecionado2026") ?? 10);
+const LESSONS_KEY="agendaAulasAgosto2026";
+const TIMER_KEY="agendaAulasAgosto2026Timer";
+const TIME_HISTORY_KEY="agendaAulasAgosto2026TimeHistory";
+
+let lessons=safeParse(LESSONS_KEY,[]);
+let activeTimer=safeParse(TIMER_KEY,null);
+let timeHistory=safeParse(TIME_HISTORY_KEY,[]);
+let editing=null;
+
+const studentInput=document.getElementById("student");
+const dateInput=document.getElementById("lessonDate");
+const timeInput=document.getElementById("lessonTime");
+const durationSelect=document.getElementById("duration");
+const subjectInput=document.getElementById("subject");
+const teacherInput=document.getElementById("teacher");
+const statusSelect=document.getElementById("status");
+const locationInput=document.getElementById("location");
+const notesInput=document.getElementById("notes");
+const saveButton=document.getElementById("saveBtn");
+const formMessage=document.getElementById("message");
+const totalEl=document.getElementById("total");
+const scheduledEl=document.getElementById("scheduled");
+const progressCountEl=document.getElementById("inProgressCount");
+const doneEl=document.getElementById("done");
+const cancelledEl=document.getElementById("cancelled");
+const hoursEl=document.getElementById("hours");
+const calendarEl=document.getElementById("calendar");
+const filterDateEl=document.getElementById("filterDate");
+const filterStatusEl=document.getElementById("filterStatus");
+const searchEl=document.getElementById("search");
+const tableBody=document.getElementById("tbody");
+
+function safeParse(key,fallback){
+  try{
+    const value=JSON.parse(localStorage.getItem(key));
+    return value===null?fallback:value;
+  }catch(e){return fallback}
+}
+function saveAll(){
+  localStorage.setItem(LESSONS_KEY,JSON.stringify(lessons));
+  localStorage.setItem(TIMER_KEY,JSON.stringify(activeTimer));
+  localStorage.setItem(TIME_HISTORY_KEY,JSON.stringify(timeHistory));
+  const indicator=document.getElementById("saveIndicator");
+  if(indicator)indicator.textContent="✅ Alterações salvas neste navegador às "+new Date().toLocaleTimeString("pt-BR");
+}
+function clock(){
+  const n=new Date();
+  document.getElementById("clock").textContent=n.toLocaleTimeString("pt-BR");
+  document.getElementById("today").textContent=n.toLocaleDateString("pt-BR",{
+    weekday:"long",day:"2-digit",month:"long",year:"numeric"
+  });
+}
+clock();setInterval(clock,1000);
+
+function dObj(s){
+  const [y,m,d]=s.split("-").map(Number);
+  return new Date(y,m-1,d,12,0,0);
+}
+function dName(s){return dObj(s).toLocaleDateString("pt-BR",{weekday:"long"})}
+function fDate(s){
+  if(!s)return "-";
+  const [y,m,d]=s.split("-");
+  return `${d}/${m}/${y}`;
+}
+function esc(t){
+  return String(t||"").replace(/[&<>"']/g,c=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  }[c]));
+}
+function cap(t){return t? t.charAt(0).toUpperCase()+t.slice(1):""}
+function durationText(minutes){
+  const m=Math.max(0,Math.round(Number(minutes)||0));
+  if(m<60)return `${m} min`;
+  return `${Math.floor(m/60)}h${m%60?` ${m%60}min`:""}`;
+}
+function elapsedText(ms,withSeconds=false){
+  const totalSeconds=Math.max(0,Math.floor(ms/1000));
+  const h=Math.floor(totalSeconds/3600);
+  const m=Math.floor((totalSeconds%3600)/60);
+  const s=totalSeconds%60;
+  if(withSeconds)return `${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+  return h?`${h}h ${m}min`:`${m} min`;
+}
+function dateTimeText(iso){
+  if(!iso)return "-";
+  const d=new Date(iso);
+  return `${d.toLocaleDateString("pt-BR")} ${d.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})}`;
+}
+function timeOnly(iso){
+  if(!iso)return "-";
+  return new Date(iso).toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit",second:"2-digit"});
+}
+function startOfDay(d){return new Date(d.getFullYear(),d.getMonth(),d.getDate(),12,0,0)}
+function daysUntil(dateStr){
+  return Math.round((startOfDay(dObj(dateStr))-startOfDay(new Date()))/86400000);
+}
+function statusClass(statusValue){return String(statusValue).replace(/\s+/g,"-")}
+function alertInfo(dateStr,statusValue){
+  if(statusValue==="Realizada")return {className:"alertGreen",tagClass:"tagGreen",text:"✓ Aula realizada"};
+  if(statusValue==="Em andamento")return {className:"alertGreen",tagClass:"tagYellow",text:"Em andamento"};
+  if(statusValue==="Cancelada")return {className:"alertRed",tagClass:"tagRed",text:"Cancelada"};
+  const diff=daysUntil(dateStr);
+  if(statusValue==="Realizada")return {className:"alertGreen",tagClass:"tagGreen",text:"Realizada"};
+   if(diff<0)return {className:"alertRed",tagClass:"tagRed",text:"Data já passou"};
+  if(diff===0)return {className:"alertGreen",tagClass:"tagGreen",text:"É hoje"};
+  if(diff===1)return {className:"alertBlue",tagClass:"tagBlue",text:"Falta 1 dia"};
+  return {className:"alertOrange",tagClass:"tagOrange",text:`Faltam ${diff} dias`};
+}
+function lessonById(id){return lessons.find(x=>x.id===id)}
+function currentElapsedMs(){
+  if(!activeTimer)return 0;
+  let total=Number(activeTimer.accumulatedMs)||0;
+  if(activeTimer.running && activeTimer.lastResumeAt){
+    total+=Date.now()-new Date(activeTimer.lastResumeAt).getTime();
+  }
+  return Math.max(0,total);
+}
+function plannedMs(lesson){return Math.max(1,Number(lesson?.duration||0))*60000}
+
+function clearForm(){
+  editing=null;
+  ["student","lessonDate","lessonTime","subject","teacher","location","notes"].forEach(
+    id=>document.getElementById(id).value=""
+  );
+  durationSelect.value="60";statusSelect.value="Agendada";
+  saveButton.textContent="💾 Salvar aula";
+  formMessage.textContent="Escolha uma data entre agosto e dezembro de 2026.";
+}
+function saveLesson(){
+  const existing=editing?lessonById(editing):null;
+  const item={
+    id:editing||"aula-"+Date.now(),
+    student:studentInput.value.trim(),
+    date:dateInput.value,
+    time:timeInput.value,
+    duration:Number(durationSelect.value),
+    subject:subjectInput.value.trim(),
+    teacher:teacherInput.value.trim(),
+    status:statusSelect.value,
+    location:locationInput.value.trim(),
+    notes:notesInput.value.trim(),
+    createdAt:existing?.createdAt||new Date().toISOString(),
+    updatedAt:new Date().toISOString()
+  };
+  if(!item.student||!item.date||!item.time||!item.subject){
+    formMessage.textContent="⚠️ Preencha aluno, data, horário e matéria.";return;
+  }
+  if(item.date<"2026-08-01"||item.date>"2026-12-31"){
+    formMessage.textContent="⚠️ A data deve estar entre agosto e dezembro de 2026.";return;
+  }
+  const conflict=lessons.find(x=>
+    x.id!==editing&&x.date===item.date&&x.time===item.time&&x.status!=="Cancelada"
+  );
+  if(conflict&&!confirm("Já existe uma aula neste horário. Deseja salvar mesmo assim?"))return;
+  if(editing){
+    const i=lessons.findIndex(x=>x.id===editing);
+    if(i>=0)lessons[i]=item;
+  }else lessons.push(item);
+  lessons.sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
+  saveAll();renderAll();clearForm();
+  formMessage.textContent="✅ Aula salva com sucesso.";
+}
+function editLesson(id){
+  const x=lessonById(id);if(!x)return;
+  editing=id;
+  studentInput.value=x.student;dateInput.value=x.date;timeInput.value=x.time;
+  durationSelect.value=x.duration;subjectInput.value=x.subject;teacherInput.value=x.teacher||"";
+  statusSelect.value=x.status;locationInput.value=x.location||"";notesInput.value=x.notes||"";
+  saveButton.textContent="✏️ Atualizar aula";
+  formMessage.textContent="Editando aula selecionada.";
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+function removeLesson(id){
+  const x=lessonById(id);if(!x)return;
+  if(activeTimer?.lessonId===id){
+    alert("Finalize ou cancele a aula em andamento antes de excluir.");return;
+  }
+  if(confirm(`Excluir a aula de ${x.student} em ${fDate(x.date)} às ${x.time}?`)){
+    lessons=lessons.filter(a=>a.id!==id);
+    saveAll();renderAll();
+  }
+}
+function toggleDone(id){
+  const x=lessonById(id);if(!x)return;
+  if(activeTimer?.lessonId===id){
+    alert("Finalize a contagem da aula antes de alterar a situação.");return;
+  }
+  x.status=x.status==="Realizada"?"Agendada":"Realizada";
+  x.updatedAt=new Date().toISOString();
+  saveAll();renderAll();
+}
+
+function startLesson(id){
+  const lesson=lessonById(id);if(!lesson)return;
+  if(lesson.status==="Cancelada"){
+    alert("Uma aula cancelada não pode ser iniciada.");return;
+  }
+  if(activeTimer && activeTimer.lessonId!==id){
+    const current=lessonById(activeTimer.lessonId);
+    alert(`Já existe uma aula em andamento: ${current?.student||"aula atual"}. Finalize-a primeiro.`);
+    return;
+  }
+  if(activeTimer?.lessonId===id){
+    if(!activeTimer.running)resumeLesson();
+    return;
+  }
+  activeTimer={
+    lessonId:id,
+    startedAt:new Date().toISOString(),
+    lastResumeAt:new Date().toISOString(),
+    accumulatedMs:0,
+    running:true
+  };
+  lesson.status="Em andamento";
+  lesson.updatedAt=new Date().toISOString();
+  saveAll();renderAll();
+  document.getElementById("liveLesson").scrollIntoView({behavior:"smooth",block:"center"});
+}
+function pauseLesson(){
+  if(!activeTimer||!activeTimer.running)return;
+  activeTimer.accumulatedMs=currentElapsedMs();
+  activeTimer.running=false;
+  activeTimer.lastResumeAt=null;
+  saveAll();renderLiveLesson();renderTable();
+}
+function resumeLesson(){
+  if(!activeTimer||activeTimer.running)return;
+  activeTimer.running=true;
+  activeTimer.lastResumeAt=new Date().toISOString();
+  saveAll();renderLiveLesson();renderTable();
+}
+function finishLesson(){
+  if(!activeTimer)return;
+  const lesson=lessonById(activeTimer.lessonId);
+  const elapsed=currentElapsedMs();
+  const endedAt=new Date().toISOString();
+  timeHistory.unshift({
+    id:"tempo-"+Date.now(),
+    lessonId:activeTimer.lessonId,
+    date:lesson?.date||"",
+    student:lesson?.student||"Aluno não encontrado",
+    subject:lesson?.subject||"",
+    startedAt:activeTimer.startedAt,
+    endedAt,
+    elapsedMs:elapsed,
+    status:"Finalizada"
+  });
+  if(lesson){
+    lesson.status="Realizada";
+    lesson.updatedAt=endedAt;
+    lesson.actualMinutes=Math.max(1,Math.round(elapsed/60000));
+  }
+  activeTimer=null;
+  saveAll();renderAll();
+}
+function cancelRunningLesson(){
+  if(!activeTimer)return;
+  if(!confirm("Cancelar a contagem atual? O tempo já contado será salvo no histórico."))return;
+  const lesson=lessonById(activeTimer.lessonId);
+  const elapsed=currentElapsedMs();
+  const endedAt=new Date().toISOString();
+  timeHistory.unshift({
+    id:"tempo-"+Date.now(),
+    lessonId:activeTimer.lessonId,
+    date:lesson?.date||"",
+    student:lesson?.student||"Aluno não encontrado",
+    subject:lesson?.subject||"",
+    startedAt:activeTimer.startedAt,
+    endedAt,
+    elapsedMs:elapsed,
+    status:"Interrompida"
+  });
+  if(lesson){
+    lesson.status="Agendada";
+    lesson.updatedAt=endedAt;
+  }
+  activeTimer=null;
+  saveAll();renderAll();
+}
+function deleteTimeRecord(id){
+  if(!confirm("Excluir este registro de tempo?"))return;
+  timeHistory=timeHistory.filter(x=>x.id!==id);
+  saveAll();renderTimeHistory();
+}
+
+function clockDigits(ms){
+  const t=Math.max(0,Math.ceil(ms/1000));
+  const h=Math.floor(t/3600),m=Math.floor((t%3600)/60),sec=t%60;
+  return [h,m,sec].map(v=>String(v).padStart(2,"0")).join(":");
+}
+function automaticSchedule(){
+  const now=Date.now();
+  // O horário programado é a referência, mesmo após fechar e reabrir a página.
+  if(activeTimer){
+    const lesson=lessonById(activeTimer.lessonId);
+    if(!lesson || lesson.status==="Cancelada")return;
+    const start=new Date(lesson.date+"T"+lesson.time+":00").getTime();
+    if(Number.isFinite(start)){
+      activeTimer.startedAt=new Date(start).toISOString();
+      activeTimer.lastResumeAt=new Date(start).toISOString();
+      activeTimer.accumulatedMs=0;
+      activeTimer.running=true;
+      if(now>=start+plannedMs(lesson)){
+        finishLesson();
+      }
+    }
+    return;
+  }
+  const candidates=lessons.filter(x=>x.status==="Agendada" && x.date && x.time)
+    .map(x=>({lesson:x,start:new Date(x.date+"T"+x.time+":00").getTime()}))
+    .filter(x=>Number.isFinite(x.start) && now>=x.start)
+    .sort((a,b)=>a.start-b.start);
+  for(const {lesson,start} of candidates){
+    const end=start+plannedMs(lesson);
+    activeTimer={lessonId:lesson.id,startedAt:new Date(start).toISOString(),lastResumeAt:new Date(start).toISOString(),accumulatedMs:0,running:true};
+    lesson.status="Em andamento";
+    lesson.updatedAt=new Date().toISOString();
+    saveAll();
+    if(now>=end){finishLesson();continue;}
+    renderAll();
+    break;
+  }
+}
+function renderNextCountdown(){
+  const box=document.getElementById("nextLessonCountdown");
+  const now=Date.now();
+  const upcoming=lessons.filter(x=>x.status==="Agendada"&&x.date&&x.time)
+    .map(x=>({...x,start:new Date(x.date+"T"+x.time+":00").getTime()}))
+    .filter(x=>Number.isFinite(x.start)&&x.start>=now)
+    .sort((a,b)=>a.start-b.start)[0];
+  if(!upcoming){box.classList.remove("soonBox");box.innerHTML='<div class="countDetails">Nenhuma aula futura agendada. Cadastre uma aula com data e horário para ver a contagem regressiva.</div>';return;}
+  const remaining=upcoming.start-now;
+  const soon=remaining<=15*60*1000;
+  box.classList.toggle("soonBox",soon);
+  box.innerHTML=`<div class="countDigits ${soon?"soon":""}">${clockDigits(remaining)}</div>
+    <div class="countDetails">${soon?"🟢 FALTAM 15 MINUTOS OU MENOS — PREPARE-SE PARA A AULA!":"⏳ Tempo que falta para começar"}<br>Aluno: ${esc(upcoming.student)} — ${esc(upcoming.subject)}<br>📅 ${fDate(upcoming.date)} às ${esc(upcoming.time)}</div>`;
+}
+function renderLiveLesson(){
+  const box=document.getElementById("liveLesson");
+  if(!activeTimer){
+    box.innerHTML=`
+      <div class="liveEmpty">
+        Aguardando o horário da próxima aula.<br>
+        A contagem começará automaticamente no horário agendado (por exemplo, 16:00).
+      </div>`;
+    return;
+  }
+  const lesson=lessonById(activeTimer.lessonId);
+  if(!lesson){
+    activeTimer=null;saveAll();renderLiveLesson();return;
+  }
+  const elapsed=currentElapsedMs();
+  const target=plannedMs(lesson);
+  const remaining=Math.max(0,target-elapsed);
+  const percent=Math.min(100,Math.round(elapsed/target*100));
+  const overtime=Math.max(0,elapsed-target);
+
+  box.innerHTML=`
+    <div class="liveTop">
+      <div>
+        <div class="liveTitle">${esc(lesson.student)} — ${esc(lesson.subject)}</div>
+        <div class="liveMeta">
+          📅 ${fDate(lesson.date)} (${cap(dName(lesson.date))})<br>
+          🕒 Horário agendado: ${esc(lesson.time)} · Duração planejada: ${durationText(lesson.duration)}<br>
+          ▶️ Início automático: ${dateTimeText(activeTimer.startedAt)}
+        </div>
+      </div>
+      <span class="alertTag ${activeTimer.running?"tagGreen":"tagOrange"}">
+        ${activeTimer.running?"Contando agora":"Pausada"}
+      </span>
+    </div>
+
+    <div class="timerSub">⏱️ Tempo decorrido desde o horário agendado</div>
+    <div class="timerDisplay">${elapsedText(elapsed,true)}</div>
+    <div class="timerSub">⏳ Contagem regressiva do tempo restante da aula</div>
+    <div class="remainingDigits ${overtime>0?"overdue":""}">${overtime>0?"+":""}${clockDigits(overtime>0?overtime:remaining)}</div>
+    <div class="timerSub">
+      ${overtime>0
+        ? `Tempo excedido: ${elapsedText(overtime)}`
+        : `Tempo restante: ${elapsedText(remaining)}`}
+    </div>
+
+    <div class="progressOuter">
+      <div class="progressInner" style="width:${percent}%"></div>
+      <div class="progressLabel">${percent}% da duração planejada</div>
+    </div>
+
+    <div class="liveStats">
+      <div class="liveStat"><strong>${elapsedText(elapsed)}</strong><span>tempo decorrido</span></div>
+      <div class="liveStat"><strong>${Math.floor(elapsed/60000)} min</strong><span>total em minutos</span></div>
+      <div class="liveStat"><strong>${durationText(lesson.duration)}</strong><span>tempo planejado</span></div>
+      <div class="liveStat"><strong>${overtime>0?elapsedText(overtime):elapsedText(remaining)}</strong><span>${overtime>0?"tempo excedido":"tempo restante"}</span></div>
+    </div>
+
+    <div class="toolbar">
+
+      <button class="secondary" onclick="finishLesson()">✅ Finalizar e salvar</button>
+      <button class="danger" onclick="cancelRunningLesson()">⛔ Interromper</button>
+    </div>`;
+}
+
+function renderTimeHistory(){
+  const body=document.getElementById("timeHistoryBody");
+  if(!timeHistory.length){
+    body.innerHTML='<tr><td colspan="8" class="empty">Nenhum tempo foi salvo ainda.</td></tr>';
+    return;
+  }
+  body.innerHTML=timeHistory.map(x=>`
+    <tr>
+      <td>${fDate(x.date)}</td>
+      <td>${esc(x.student)}</td>
+      <td>${esc(x.subject||"-")}</td>
+      <td>${dateTimeText(x.startedAt)}</td>
+      <td>${dateTimeText(x.endedAt)}</td>
+      <td>
+        <span class="historyTime">${elapsedText(x.elapsedMs)}</span><br>
+        <small>${Math.floor((x.elapsedMs||0)/60000)} minutos</small>
+      </td>
+      <td>${esc(x.status)}</td>
+      <td><button class="danger" onclick="deleteTimeRecord('${x.id}')">Excluir</button></td>
+    </tr>
+  `).join("");
+}
+function renderSummary(){
+  const monthLessons=lessons.filter(x=>Number(x.date.slice(5,7))===selectedMonth+1);
+   totalEl.textContent=monthLessons.length;
+  scheduledEl.textContent=monthLessons.filter(x=>x.status==="Agendada").length;
+  progressCountEl.textContent=monthLessons.filter(x=>x.status==="Em andamento").length;
+  doneEl.textContent=monthLessons.filter(x=>x.status==="Realizada").length;
+  cancelledEl.textContent=monthLessons.filter(x=>x.status==="Cancelada").length;
+  const mins=monthLessons.filter(x=>x.status!=="Cancelada").reduce((s,x)=>s+Number(x.duration||0),0);
+  hoursEl.textContent=durationText(mins);
+}
+function renderCalendar(){
+  calendarEl.innerHTML="";
+  ["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"].forEach(
+    n=>calendarEl.innerHTML+=`<div class="weekday">${n}</div>`
+  );
+  for(let i=0;i<new Date(2026,selectedMonth,1).getDay();i++){
+    calendarEl.innerHTML+='<div class="day empty"></div>';
+  }
+  const now=new Date();
+  const todayKey=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,"0")}-${String(now.getDate()).padStart(2,"0")}`;
+  for(let d=1;d<=new Date(2026,selectedMonth+1,0).getDate();d++){
+    const ds=`2026-${String(selectedMonth+1).padStart(2,"0")}-${String(d).padStart(2,"0")}`;
+    const box=document.createElement("div");
+    box.className="day"+(ds===todayKey?" today":"");
+    box.innerHTML=`<div class="num">${d}<span class="dayname">${dName(ds)}</span></div>`;
+    lessons.filter(x=>x.date===ds).forEach(x=>{
+      const c=document.createElement("div");
+      const alert=alertInfo(x.date,x.status);
+      c.className=`chip ${statusClass(x.status)} ${alert.className}`;
+      c.innerHTML=`
+        <strong>${x.time}</strong> — ${esc(x.student)}<br>
+        ${esc(x.subject)}<br>
+        <span class="alertTag ${alert.tagClass}">${alert.text}</span>`;
+      c.onclick=()=>editLesson(x.id);
+      box.appendChild(c);
+    });
+    box.ondblclick=()=>{
+      dateInput.value=ds;
+      window.scrollTo({top:0,behavior:"smooth"});
+    };
+    calendarEl.appendChild(box);
+  }
+}
+function fillDates(){
+  const current=filterDateEl.value;
+  filterDateEl.innerHTML='<option value="">Todos os dias</option>';
+  for(let d=1;d<=new Date(2026,selectedMonth+1,0).getDate();d++){
+    const ds=`2026-${String(selectedMonth+1).padStart(2,"0")}-${String(d).padStart(2,"0")}`;
+    filterDateEl.innerHTML+=`<option value="${ds}">${String(d).padStart(2,"0")}/${String(selectedMonth+1).padStart(2,"0")} — ${cap(dName(ds))}</option>`;
+  }
+  filterDateEl.value=[...filterDateEl.options].some(o=>o.value===current)?current:"";
+}
+function renderTable(){
+  const q=searchEl.value.toLowerCase().trim();
+  const s=filterStatusEl.value;
+  const fd=filterDateEl.value;
+  const list=lessons.filter(x=>Number(x.date.slice(5,7))===selectedMonth+1).filter(x=>{
+    const hay=[x.student,x.subject,x.teacher,x.location,x.notes].join(" ").toLowerCase();
+    return(!q||hay.includes(q))&&(!s||x.status===s)&&(!fd||x.date===fd);
+  });
+  if(!list.length){
+    tableBody.innerHTML='<tr><td colspan="11" class="empty">Nenhuma aula cadastrada.</td></tr>';
+    return;
+  }
+  tableBody.innerHTML=list.map(x=>{
+    const alert=alertInfo(x.date,x.status);
+    const running=activeTimer?.lessonId===x.id;
+    return `
+      <tr>
+        <td>${fDate(x.date)}</td>
+        <td>${cap(dName(x.date))}</td>
+        <td><strong>${x.time}</strong></td>
+        <td>${esc(x.student)}</td>
+        <td>${esc(x.subject)}</td>
+        <td>${durationText(x.duration)}${x.actualMinutes?`<br><small>Real: ${durationText(x.actualMinutes)}</small>`:""}</td>
+        <td>${esc(x.teacher||"-")}</td>
+        <td>${esc(x.location||"-")}</td>
+        <td><span class="alertTag ${alert.tagClass}">${alert.text}</span></td>
+        <td><span class="badge ${statusClass(x.status)}B">${x.status}</span></td>
+        <td>
+          <div class="actions">
+            ${running ? `<button class="warning" onclick="document.getElementById('liveLesson').scrollIntoView({behavior:'smooth'})">Ver tempo</button>` : ''}
+            <button class="secondary" onclick="shareLesson('${x.id}')">📲 Enviar ao aluno</button>
+            <button class="secondary" onclick="editLesson('${x.id}')">Editar</button>
+            <button class="primary" onclick="toggleDone('${x.id}')">${x.status==="Realizada"?"Reabrir":"Concluir"}</button>
+            <button class="danger" onclick="removeLesson('${x.id}')">Excluir</button>
+          </div>
+        </td>
+      </tr>`;
+  }).join("");
+}
+
+function studentPage(data){
+ const payload=JSON.stringify(data).replace(/</g,'\\u003c');
+ return `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Minha aula — Contagem regressiva</title><style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#081726;color:white;font-family:Arial,sans-serif;padding:16px;box-sizing:border-box}main{width:min(540px,100%);text-align:center;background:#102b43;padding:28px 18px;border:1px solid #41617a;border-radius:22px;box-sizing:border-box}h1{color:#8dc8ff}#timer{font-size:clamp(38px,10vw,68px);font-weight:bold;font-variant-numeric:tabular-nums;margin:25px 0;color:#ffd166}#state{padding:14px;border-radius:12px;background:#203d55}main.ready{border:3px solid #32d17d}main.ready #timer{color:#32d17d}main.ready #state{background:#155b39;color:#d7ffe6}p{line-height:1.6}small{color:#a9bfd1}</style></head><body><main id="card"><h1>📚 Minha aula</h1><h2 id="student"></h2><p id="details"></p><div id="timer">--:--:--</div><div id="state">Aguardando horário</div><p><small>Início automático no horário marcado, sem botão. Relógio do aparelho configurado corretamente.</small></p></main><script>const aula=${payload};const f=document.getElementById.bind(document);f('student').textContent=aula.student;f('details').textContent=aula.subject+' • '+aula.date.split('-').reverse().join('/')+' às '+aula.time+' • Duração: '+aula.duration+' min'+(aula.teacher?' • Professor: '+aula.teacher:'')+(aula.location?' • Local: '+aula.location:'');function tick(){const [y,m,d]=aula.date.split('-').map(Number),[h,mi]=aula.time.split(':').map(Number);const target=Date.UTC(y,m-1,d,h+3,mi);const ms=target-Date.now();const card=f('card');card.classList.toggle('ready',ms>0&&ms<=900000);if(ms<=0){const elapsed=-ms;const duration=aula.duration*60000;card.classList.add('ready');const secs=Math.floor(elapsed/1000);f('timer').textContent=[Math.floor(secs/3600),Math.floor(secs%3600/60),secs%60].map(x=>String(x).padStart(2,'0')).join(':');f('state').textContent=elapsed<duration?'🟢 AULA INICIADA AUTOMATICAMENTE — tempo decorrido':'✅ Horário previsto de término alcançado';return}let sec=Math.ceil(ms/1000);const days=Math.floor(sec/86400);sec%=86400;const hh=Math.floor(sec/3600),mm=Math.floor(sec%3600/60),ss=sec%60;f('timer').textContent=(days?days+'d ':'')+[hh,mm,ss].map(x=>String(x).padStart(2,'0')).join(':');f('state').textContent=ms<=900000?'🟢 Faltam 15 minutos ou menos! Prepare-se.':'⏳ Tempo restante até a aula';}tick();setInterval(tick,1000);<\/script></body></html>`;
+}
+function shareLesson(id){
+ const x=lessonById(id);if(!x)return;
+ const data={student:x.student,date:x.date,time:x.time,duration:x.duration,subject:x.subject,teacher:x.teacher||'',location:x.location||''};
+ const page=studentPage(data);
+ const blob=new Blob([page],{type:'text/html;charset=utf-8'});
+ const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='aula_'+x.date+'_'+x.student.replace(/[^a-z0-9]/gi,'_')+'.html';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);
+ const message=`📚 Olá, ${x.student}! Sua aula de ${x.subject} será em ${fDate(x.date)} às ${x.time}. Duração: ${durationText(x.duration)}.${x.location?' Local: '+x.location+'.':''} Enviarei também um arquivo HTML com contagem regressiva em tempo real e alerta verde nos últimos 15 minutos. Abra o arquivo no navegador.`;
+ if(confirm('Arquivo individual do aluno baixado! Deseja abrir o WhatsApp com a mensagem pronta? Anexe também o arquivo HTML baixado.'))window.open('https://wa.me/?text='+encodeURIComponent(message),'_blank','noopener');
+}
+
+function exportCSV(){
+  const rows=[[
+    "Data","Dia","Hora","Aluno","Matéria","Duração planejada","Duração real",
+    "Professor","Local","Alerta","Situação","Observações"
+  ]];
+  lessons.forEach(x=>rows.push([
+    fDate(x.date),cap(dName(x.date)),x.time,x.student,x.subject,
+    durationText(x.duration),x.actualMinutes?durationText(x.actualMinutes):"",
+    x.teacher||"",x.location||"",alertInfo(x.date,x.status).text,x.status,x.notes||""
+  ]));
+  const cell=v=>`"${String(v??"").replace(/"/g,'""')}"`;
+  const csv="\uFEFF"+rows.map(r=>r.map(cell).join(";")).join("\n");
+  const blob=new Blob([csv],{type:"text/csv;charset=utf-8"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url;a.download="agenda_aulas_agosto_dezembro_2026.csv";
+  document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+}
+function backupJSON(){
+  const data={version:1,lessons,activeTimer,timeHistory,selectedMonth};
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+  const url=URL.createObjectURL(blob),a=document.createElement("a");
+  a.href=url;a.download="backup_agenda_aulas_2026.json";a.click();URL.revokeObjectURL(url);
+}
+async function restoreJSON(input){
+  const file=input.files[0];if(!file)return;
+  try{
+    const data=JSON.parse(await file.text());
+    if(!Array.isArray(data.lessons)||!Array.isArray(data.timeHistory))throw Error("Arquivo inválido");
+    if(!confirm("Restaurar backup? Isso substituirá os registros atuais neste navegador."))return;
+    lessons=data.lessons;timeHistory=data.timeHistory;activeTimer=data.activeTimer||null;
+    selectedMonth=Math.max(7,Math.min(11,Number(data.selectedMonth)||10));
+    localStorage.setItem("agendaAulasMesSelecionado2026",selectedMonth);
+    saveAll();renderAll();alert("Backup restaurado com sucesso!");
+  }catch(e){alert("Não foi possível restaurar o arquivo JSON.")}
+  finally{input.value=""}
+}
+function renderAll(){
+   document.getElementById("monthSelect").value=selectedMonth;
+   document.getElementById("calendarTitle").textContent="🗓️ Calendário de "+new Date(2026,selectedMonth,1).toLocaleDateString("pt-BR",{month:"long",year:"numeric"});
+  renderNextCountdown();renderLiveLesson();renderTimeHistory();renderSummary();
+  renderCalendar();fillDates();renderTable();
+}
+function refreshRealtime(){
+  clock();
+  automaticSchedule();
+  renderNextCountdown();
+  renderLiveLesson();
+  if(activeTimer && activeTimer.running){
+    renderTable();
+  }
+}
+selectedMonth=Math.max(7,Math.min(11,selectedMonth));
+automaticSchedule();
+renderAll();
+setInterval(refreshRealtime,1000);
+</script>
+</body>
+</html>
