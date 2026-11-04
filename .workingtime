@@ -1,0 +1,80 @@
+{
+    "extConfig": {
+        "enums": [
+            {
+                "name": "ActionType",
+                "values": [
+                    "Building",
+                    "Codding",
+                    "Debugging",
+                    "Documenting",
+                    "Idle",
+                    "Testing"
+                ]
+            },
+            {
+                "name": "SessionState",
+                "values": [
+                    "Ongoing",
+                    "Idle",
+                    "Ended"
+                ]
+            }
+        ]
+    },
+    "data": [
+        {
+            "config": false,
+            "user": "edskate",
+            "dailySessions": [
+                {
+                    "date": "Wed Nov 04 2026",
+                    "sessions": [
+                        {
+                            "sessionInfo": {
+                                "id": "cc015265-a6c9-4870-8215-cd5ada87addb",
+                                "duration": 96026,
+                                "idle": 858791,
+                                "state": "Idle",
+                                "durations": [
+                                    {
+                                        "id": "8326f029-4339-4cbd-a29d-285903227ab3",
+                                        "state": "Idle",
+                                        "begin": 1793810745102,
+                                        "end": 1793810745102,
+                                        "duration": 0
+                                    },
+                                    {
+                                        "id": "030b841a-b864-4c84-a407-ae7149ff2feb",
+                                        "state": "Ongoing",
+                                        "begin": 1793810656134,
+                                        "end": 1793810745102,
+                                        "duration": 88968
+                                    },
+                                    {
+                                        "id": "dbfbecd4-5c4c-47a9-af1f-51fc239db11b",
+                                        "state": "Idle",
+                                        "begin": 1793809995036,
+                                        "end": 1793810656134,
+                                        "duration": 661098
+                                    },
+                                    {
+                                        "id": "de4706b2-9ef7-4de2-820c-1376672b7f92",
+                                        "state": "Ongoing",
+                                        "begin": 1793809987978,
+                                        "end": 1793809995036,
+                                        "duration": 7058
+                                    }
+                                ],
+                                "filesExt": [
+                                    ".html"
+                                ]
+                            },
+                            "actionType": "Idle"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
